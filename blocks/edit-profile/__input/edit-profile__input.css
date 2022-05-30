@@ -1,0 +1,27 @@
+.edit-profile__input {
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 0 13px 0;
+  color: #000;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  margin: 0 0 30px 0;
+  width: 100%;
+  outline: none;
+  transition: 0.5s;
+}
+
+.edit-profile__input:focus-visible {
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+
+.edit-profile__input:last-of-type {
+  margin-bottom: 48px;
+}
+
+@media screen and (max-width: 1023px) {
+  .edit-profile__input:last-of-type {
+    margin-bottom: 45px;
+  }
+}

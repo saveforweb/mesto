@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./pages/index.css">
+  <title>Mesto Russia</title>
+</head>
+
+<body class="root">
+  <div class="page">
+    <header class="header">
+      <img src="./images/logo.svg" alt="Mesto Russia" class="header__logo">
+    </header>
+    <main class="content">
+      <section class="profile">
+        <div class="profile__main">
+          <img src="./images/profile-avatar.jpg" alt="" class="profile__avatar">
+          <div class="profile__info">
+            <div class="profile__name-block">
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="profile__edit-button"></button>
+            </div>
+            <p class="profile__subtitle">Исследователь океана</p>
+          </div>
+        </div>
+        <button class="profile__add-button"></button>
+      </section>
+      <section class="elements">
+        <div class="element">
+          <img src="./images/element-karachaevsk.jpg" alt="Карачаевск" class="element__image">
+          <div class="element__description">
+            <h2 class="element__title">Карачаевск</h2>
+            <button class="element__like-button"></button>
+          </div>
+        </div>
+        <div class="element">
+          <img src="./images/element-gora-elbrus-1.jpg" alt="Гора Эльбрус" class="element__image">
+          <div class="element__description">
+            <h2 class="element__title">Гора Эльбрус</h2>
+            <button class="element__like-button element__like-button_cheked"></button>
+          </div>
+        </div>
+        <div class="element">
+          <img src="./images/element-dombay-1.jpg" alt="Домбай" class="element__image">
+          <div class="element__description">
+            <h2 class="element__title">Домбай</h2>
+            <button class="element__like-button"></button>
+          </div>
+        </div>
+        <div class="element">
+          <img src="./images/element-gora-elbrus-2.jpg" alt="Гора Эльбрус" class="element__image">
+          <div class="element__description">
+            <h2 class="element__title">Гора Эльбрус</h2>
+            <button class="element__like-button"></button>
+          </div>
+        </div>
+        <div class="element">
+          <img src="./images/element-dombay-2.jpg" alt="Домбай" class="element__image">
+          <div class="element__description">
+            <h2 class="element__title">Домбай</h2>
+            <button class="element__like-button"></button>
+          </div>
+        </div>
+        <div class="element">
+          <img src="./images/element-karachaevo-cherkesiy.jpg" alt="Карачаево-Черкесия" class="element__image">
+          <div class="element__description">
+            <h2 class="element__title">Карачаево-Черкесия</h2>
+            <button class="element__like-button"></button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__copyright">&copy;&nbsp;2020 Mesto Russia</p>
+    </footer>
+  </div>
+  <div class="overlay overlay_hidden">
+    <div class="edit-profile">
+      <button class="edit-profile__button-close"></button>
+      <h2 class="edit-profile__title">Редактировать профиль</h2>
+      <form class="edit-profile__form">
+        <label for="name" class="edit-profile__label">Имя профиля</label>
+        <input type="text" id="name" value="Жак-Ив Кусто" class="edit-profile__input edit-profile__input_name">
+        <label for="subtitle" class="edit-profile__label">Должность или роль</label>
+        <input type="text" id="subtitle" value="Исследователь океана"
+          class="edit-profile__input edit-profile__input_subtitle">
+        <button type="submit" class="edit-profile__button-save">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  <script src="./pages/index.js"></script>
+</body>
+
+</html>
