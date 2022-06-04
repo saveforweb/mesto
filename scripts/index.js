@@ -4,11 +4,11 @@ let closeButton = document.querySelector('.edit-profile__button-close');
 let profileButton = document.querySelector('.profile__edit-button');
 
 let openOverlay = function () {
-  overlay.classList.remove('overlay_hidden');
+  overlay.classList.add('overlay_open');
 }
 
 let closeOverlay = function () {
-  overlay.classList.add('overlay_hidden');
+  overlay.classList.remove('overlay_open');
 }
 
 profileButton.addEventListener('click', function () {
@@ -29,8 +29,8 @@ closeButton.addEventListener('click', function () {
 let formElement = document.querySelector('.edit-profile__form');
 
 // Находим поля формы в DOM
-let nameInput = document.querySelector('.edit-profile__input_name');
-let subtitleInput = document.querySelector('.edit-profile__input_subtitle');
+let nameInput = document.querySelector('.edit-profile__input-name');
+let subtitleInput = document.querySelector('.edit-profile__input-subtitle');
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
