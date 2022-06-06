@@ -29,8 +29,8 @@ closeButton.addEventListener('click', function () {
 let formElement = document.querySelector('.edit-profile__form');
 
 // Находим поля формы в DOM
-let nameInput = document.querySelector('.edit-profile__input-name');
-let subtitleInput = document.querySelector('.edit-profile__input-subtitle');
+let nameInput = document.querySelector('.edit-profile__input_name_name');
+let subtitleInput = document.querySelector('.edit-profile__input_name_subtitle');
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
