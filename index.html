@@ -30,48 +30,7 @@
       </section>
       <section class="elements">
         <ul class="elements__list">
-          <li class="element">
-            <img src="./images/element-karachaevsk.jpg" alt="Карачаевск" class="element__image">
-            <div class="element__description">
-              <h2 class="element__title">Карачаевск</h2>
-              <button type="button" class="element__like-button"></button>
-            </div>
-          </li>
-          <li class="element">
-            <img src="./images/element-gora-elbrus-1.jpg" alt="Гора Эльбрус" class="element__image">
-            <div class="element__description">
-              <h2 class="element__title">Гора Эльбрус</h2>
-              <button type="button" class="element__like-button element__like-button_cheked"></button>
-            </div>
-          </li>
-          <li class="element">
-            <img src="./images/element-dombay-1.jpg" alt="Домбай" class="element__image">
-            <div class="element__description">
-              <h2 class="element__title">Домбай</h2>
-              <button type="button" class="element__like-button"></button>
-            </div>
-          </li>
-          <li class="element">
-            <img src="./images/element-gora-elbrus-2.jpg" alt="Гора Эльбрус" class="element__image">
-            <div class="element__description">
-              <h2 class="element__title">Гора Эльбрус</h2>
-              <button type="button" class="element__like-button"></button>
-            </div>
-          </li>
-          <li class="element">
-            <img src="./images/element-dombay-2.jpg" alt="Домбай" class="element__image">
-            <div class="element__description">
-              <h2 class="element__title">Домбай</h2>
-              <button type="button" class="element__like-button"></button>
-            </div>
-          </li>
-          <li class="element">
-            <img src="./images/element-karachaevo-cherkesiy.jpg" alt="Карачаево-Черкесия" class="element__image">
-            <div class="element__description">
-              <h2 class="element__title">Карачаево-Черкесия</h2>
-              <button type="button" class="element__like-button"></button>
-            </div>
-          </li>
+
         </ul>
       </section>
     </main>
@@ -80,18 +39,51 @@
     </footer>
   </div>
   <div class="overlay">
-    <div class="edit-profile">
-      <button type="button" class="edit-profile__button-close"></button>
-      <h2 class="edit-profile__title">Редактировать профиль</h2>
-      <form class="edit-profile__form" name="edit-profile">
-        <input type="text" id="name" name="name" value="Жак-Ив Кусто" placeholder="Имя" class="edit-profile__input edit-profile__input_name_name">
+    <div class="popup popup-profile">
+      <button type="button" class="popup__button-close popup-profile_element_close"></button>
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form class="popup__form popup-profile_element_form" name="edit-profile">
+        <input type="text" id="name" name="name" value="Жак-Ив Кусто" placeholder="Имя"
+          class="popup__input popup-profile_element_name">
         <input type="text" id="subtitle" name="subtitle" placeholder="Роль" value="Исследователь океана"
-          class="edit-profile__input edit-profile__input_name_subtitle">
-        <button type="submit" class="edit-profile__button-save">Сохранить</button>
+          class="popup__input popup-profile_element_subtitle">
+        <button type="submit" class="popup__button-save">Сохранить</button>
       </form>
     </div>
+
+    <div class="popup popup-content">
+      <button type="button" class="popup__button-close popup-content_element_close"></button>
+      <h2 class="popup__title">Новое место</h2>
+      <form class="popup__form popup-content_element_form" name="edit-content">
+        <input type="text" id="place" name="place" value="" placeholder="Название"
+          class="popup__input popup-content_element_place">
+        <input type="text" id="link" name="link" value="" placeholder="Ссылка на картинку"
+          class="popup__input popup-content_element_link">
+        <button type="submit" class="popup__button-save">Создать</button>
+      </form>
+    </div>
+
+    <div class="popup-fullscreen">
+      <button type="button" class="popup-fullscreen__button-close"></button>
+      <img src="" alt="" class="popup-fullscreen__image">
+      <p class="popup-fullscreen__subtitle"></p>
+    </div>
+
   </div>
+
+  <template class="element_template">
+    <li class="element">
+      <button type="button" class="element__trash-button"></button>
+      <img src="./images/element-karachaevsk.jpg" alt="Карачаевск" class="element__image">
+      <div class="element__description">
+        <h2 class="element__title">Карачаевск</h2>
+        <button type="button" class="element__like-button"></button>
+      </div>
+    </li>
+  </template>
+
   <script src="./scripts/index.js"></script>
+
 </body>
 
 </html>

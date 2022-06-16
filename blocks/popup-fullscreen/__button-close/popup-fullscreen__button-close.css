@@ -1,4 +1,4 @@
-.edit-profile__button-close {
+.popup-fullscreen__button-close {
   position: absolute;
   top: -40px;
   right: -40px;
@@ -16,15 +16,16 @@
   cursor: pointer;
 }
 
-.edit-profile__button-close:hover {
+.popup-fullscreen__button-close:hover {
   opacity: 0.6;
 }
 
 @media screen and (max-width: 1023px) {
-  .edit-profile__button-close {
+  .popup-fullscreen__button-close {
     right: 0;
     width: 20px;
     height: 20px;
     top: -36px;
   }
 }
+

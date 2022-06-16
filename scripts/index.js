@@ -1,62 +1,176 @@
-let root = document.querySelector('.root');
-let overlay = document.querySelector('.overlay');
-let closeButton = document.querySelector('.edit-profile__button-close');
-let profileButton = document.querySelector('.profile__edit-button');
-
-let openOverlay = function () {
-  overlay.classList.add('overlay_open');
-}
-
-let closeOverlay = function () {
-  overlay.classList.remove('overlay_open');
-}
-
-profileButton.addEventListener('click', function () {
-  openOverlay();
-});
-
-overlay.addEventListener('click', function (e) {
-  if(e.target === e.currentTarget) {
-    closeOverlay();
+// массив данных
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
+];
+
+
+// основные элементы страницы
+const root = document.querySelector('.root');
+const elementTemplate = document.querySelector('.element_template').content;
+const elementsList = document.querySelector('.elements__list');
+const overlay = document.querySelector('.overlay');
+const profileButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+
+
+// элементы окна редактирования профиля
+const popupProfile = document.querySelector('.popup-profile');
+const popupProfileCloseButton = document.querySelector('.popup-profile_element_close');
+const popupProfileForm = document.querySelector('.popup-profile_element_form');
+const popupProfileNameInput = document.querySelector('.popup-profile_element_name');
+const popupProfileSubtitleInput = document.querySelector('.popup-profile_element_subtitle');
+
+
+// элементы окна редактирования контента
+const popupContent = document.querySelector('.popup-content');
+const popupContentCloseButton = document.querySelector('.popup-content_element_close');
+const popupContentForm = document.querySelector('.popup-content_element_form');
+const popupContentPlaceInput = document.querySelector('.popup-content_element_place');
+const popupContentLinkInput = document.querySelector('.popup-content_element_link');
+
+// элементы окна просмотра изображений
+const popupImage = document.querySelector('.popup-fullscreen');
+const popupImageItem = document.querySelector('.popup-fullscreen__image');
+const popupImageSubtitle = document.querySelector('.popup-fullscreen__subtitle');
+const popupImageCloseButton = document.querySelector('.popup-fullscreen__button-close');
+
+
+// функция изменения профиля
+function profileFormSubmitHandler(e) {
+  e.preventDefault();
+  const nameValue = popupProfileNameInput.value;
+  const subtitleValue = popupProfileSubtitleInput.value;
+  const profileName = document.querySelector('.profile__name');
+  const profileSubtitle = document.querySelector('.profile__subtitle');
+  profileName.textContent = nameValue;
+  profileSubtitle.textContent = subtitleValue;
+  closeOverlay();
+}
+
+
+// функция добавления контента
+function contentFormSubmitHandler(e) {
+  e.preventDefault();
+  const placeValue = popupContentPlaceInput.value;
+  const linkValue = popupContentLinkInput.value;
+  const contentObject = {
+    name: placeValue,
+    link: linkValue
+  };
+  renderItem(contentObject);
+  popupContentPlaceInput.value = '';
+  popupContentLinkInput.value = '';
+  closeOverlay();
+}
+
+
+// общие функции
+const openOverlay = function (target) { // открытие оверлея
+  overlay.classList.add('overlay_open');
+  if (target === profileButton) {
+    popupProfile.classList.add('popup_open');
+  } else if (target === addButton) {
+    popupContent.classList.add('popup_open');
+  }
+}
+
+const closeOverlay = function () { // закрытие оверлея
+  overlay.classList.remove('overlay_open');
+  popupProfile.classList.remove('popup_open');
+  popupContent.classList.remove('popup_open');
+  popupImage.classList.remove('popup_open');
+}
+
+
+// функция добавления и обработки элементов
+function renderItem(item) {
+  const newElement = elementTemplate.querySelector('.element').cloneNode(true);
+  const likeButton = newElement.querySelector('.element__like-button');
+  const trashButton = newElement.querySelector('.element__trash-button');
+  const itemImage = newElement.querySelector('.element__image');
+
+  newElement.querySelector('.element__image').src = item.link;
+  newElement.querySelector('.element__image').alt = item.name;
+  newElement.querySelector('.element__title').innerText = item.name;
+  elementsList.insertAdjacentElement('afterbegin', newElement);
+
+  likeButton.addEventListener('click', function () {
+    likeButton.classList.toggle('element__like-button_cheked');
+  });
+
+  trashButton.addEventListener('click', function () {
+    newElement.remove();
+  });
+
+  itemImage.addEventListener('click', function () {
+    overlay.classList.add('overlay_open');
+    popupImage.classList.add('popup_open');
+    popupImageItem.src = item.link;
+    popupImageItem.alt = item.name;
+    popupImageSubtitle.innerText = item.name;
+  });
+}
+
+initialCards.forEach(renderItem);
+
+
+// обработчики событий редактирования профиля
+profileButton.addEventListener('click', function (e) { // открытие редактирования редактирования профиля
+  openOverlay(e.target);
 });
 
-closeButton.addEventListener('click', function () {
+popupProfileForm.addEventListener('submit', profileFormSubmitHandler); // отправка формы редактирования профиля
+
+popupProfileCloseButton.addEventListener('click', function () { // закрытие редактирование профиля на крестик
   closeOverlay();
 });
 
-// Находим форму в DOM
-let formElement = document.querySelector('.edit-profile__form');
 
-// Находим поля формы в DOM
-let nameInput = document.querySelector('.edit-profile__input_name_name');
-let subtitleInput = document.querySelector('.edit-profile__input_name_subtitle');
+// обработчики событий редактирования контента
+addButton.addEventListener('click', function (e) { // открытие редактирования добавления контента
+  openOverlay(e.target);
+});
 
-// Обработчик «отправки» формы, хотя пока
-// она никуда отправляться не будет
-function formSubmitHandler (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                                // Так мы можем определить свою логику отправки.
-                                                // О том, как это делать, расскажем позже.
+popupContentForm.addEventListener('submit', contentFormSubmitHandler); // отправка формы редактирования контента
 
-    // Получите значение полей jobInput и nameInput из свойства value
-    let nameValue = nameInput.value;
-    let subtitleValue = subtitleInput.value;
+popupContentCloseButton.addEventListener('click', function () { // закрытие редактирование контента на крестик
+  closeOverlay();
+});
 
-    // Выберите элементы, куда должны быть вставлены значения полей
-    let profileName = document.querySelector('.profile__name');
-    let profileSubtitle = document.querySelector('.profile__subtitle');
+// обработчики фуллскрин
+popupImageCloseButton.addEventListener('click', function () { // закрытие фуллскрин
+  closeOverlay();
+});
 
-    // Вставьте новые значения с помощью textContent
-    profileName.textContent = nameValue;
-    profileSubtitle.textContent = subtitleValue;
-
+// общие обработчики
+overlay.addEventListener('click', function (e) { // закрытие оверлея по клику на фон
+  if (e.target === e.currentTarget) {
     closeOverlay();
-}
-
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler);
+  }
+});
 
 
 
