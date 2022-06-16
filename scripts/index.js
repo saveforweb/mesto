@@ -38,18 +38,18 @@ const addButton = document.querySelector('.profile__add-button');
 
 // элементы окна редактирования профиля
 const popupProfile = document.querySelector('.popup-profile');
-const popupProfileCloseButton = document.querySelector('.popup-profile_element_close');
-const popupProfileForm = document.querySelector('.popup-profile_element_form');
-const popupProfileNameInput = document.querySelector('.popup-profile_element_name');
-const popupProfileSubtitleInput = document.querySelector('.popup-profile_element_subtitle');
+const popupProfileCloseButton = document.querySelector('.popup__button-close_type_profile');
+const popupProfileForm = document.querySelector('.popup__form_type_profile');
+const popupProfileNameInput = document.querySelector('.popup__input_type_profile-name');
+const popupProfileSubtitleInput = document.querySelector('.popup__input_type_profile-subtitle');
 
 
 // элементы окна редактирования контента
 const popupContent = document.querySelector('.popup-content');
-const popupContentCloseButton = document.querySelector('.popup-content_element_close');
-const popupContentForm = document.querySelector('.popup-content_element_form');
-const popupContentPlaceInput = document.querySelector('.popup-content_element_place');
-const popupContentLinkInput = document.querySelector('.popup-content_element_link');
+const popupContentCloseButton = document.querySelector('.popup__button-close_type_content');
+const popupContentForm = document.querySelector('.popup__form_type_content');
+const popupContentPlaceInput = document.querySelector('.popup__input_type-content-place');
+const popupContentLinkInput = document.querySelector('.popup__input_type-content-link');
 
 // элементы окна просмотра изображений
 const popupImage = document.querySelector('.popup-fullscreen');
