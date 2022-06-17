@@ -30,7 +30,6 @@
 
 @import url(../blocks/overlay/overlay.css);
 @import url(../blocks/overlay/_open/overlay_open.css);
-@import url(../blocks/overlay/_fadeout/overlay_fadeout.css);
 
 @import url(../blocks/popup-fullscreen/popup-fullscreen.css);
 @import url(../blocks/popup-fullscreen/__image/popup-fullscreen__image.css);
