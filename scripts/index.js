@@ -98,7 +98,7 @@ function createItem(item) {
 }
 
 function renderItem(item) {
-  elementsList.insertAdjacentElement('afterbegin', createItem(item));
+  elementsList.prepend(createItem(item));
 }
 
 initialCards.forEach(renderItem);
