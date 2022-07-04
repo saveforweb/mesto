@@ -12,6 +12,7 @@
   background-image: url(../../../images/close-icon.svg);
   background-position: center center;
   background-size: 32px 32px;
+  background-repeat: no-repeat;
   transition: 0.5s;
   cursor: pointer;
 }
