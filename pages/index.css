@@ -30,11 +30,13 @@
 
 @import url(../blocks/overlay/overlay.css);
 @import url(../blocks/overlay/_open/overlay_open.css);
+@import url(../blocks/overlay/_type/overlay_type_fullscreen.css);
 
 @import url(../blocks/popup-fullscreen/popup-fullscreen.css);
 @import url(../blocks/popup-fullscreen/__image/popup-fullscreen__image.css);
 @import url(../blocks/popup-fullscreen/__subtitle/popup-fullscreen__subtitle.css);
 @import url(../blocks/popup-fullscreen/__button-close/popup-fullscreen__button-close.css);
+
 
 
 @import url(../blocks/popup/popup.css);

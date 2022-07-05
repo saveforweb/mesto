@@ -37,6 +37,8 @@ const toggleButtonState = (inputList, buttonElement) => {
   }
 }
 
+
+
 // функция навешивания слушателей событий
 const setEventListeners = (formElement, input, button, errorClass) => {
   const inputList = Array.from(formElement.querySelectorAll(input));
@@ -49,6 +51,8 @@ const setEventListeners = (formElement, input, button, errorClass) => {
     });
   });
 };
+
+
 
 // функция запуска валидации и получения из DOM: все формы и все филдсеты в них
 const enableValidation = (form) => {

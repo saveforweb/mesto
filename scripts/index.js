@@ -11,7 +11,7 @@ const profileSubtitle = document.querySelector('.profile__subtitle');
 
 // элементы окна редактирования профиля
 const popupProfile = document.querySelector('.popup-profile');
-const popupProfileCloseButton = document.querySelector('.popup__button-close_type_profile');
+const popupProfileCloseButton = popupProfile.querySelector('.popup__button-close_type_profile');
 const popupProfileForm = document.querySelector('.popup__form_type_profile');
 const popupProfileNameInput = document.querySelector('.popup__input_type_profile-name');
 const popupProfileSubtitleInput = document.querySelector('.popup__input_type_profile-subtitle');
@@ -23,6 +23,8 @@ const popupContentCloseButton = document.querySelector('.popup__button-close_typ
 const popupContentForm = document.querySelector('.popup__form_type_content');
 const popupContentPlaceInput = document.querySelector('.popup__input_type-content-place');
 const popupContentLinkInput = document.querySelector('.popup__input_type-content-link');
+const popupContentInputs = [popupContentPlaceInput, popupContentLinkInput];
+const popupContentButton = popupContentForm.querySelector('.popup__button-save');
 
 // элементы окна просмотра изображений
 const popupImage = document.querySelector('.popup-fullscreen');
@@ -51,6 +53,7 @@ function submitContentFormHandler(e) {
   };
   renderItem(contentObject);
   popupContentForm.reset();
+  toggleButtonState(popupContentInputs, popupContentButton);
   closeOverlay(popupContent);
 }
 
@@ -66,8 +69,30 @@ const closeOverlay = function (openPopup) { // закрытие оверлея
   overlay.classList.remove('overlay_open');
   openPopup.classList.remove('popup_open');
   removeEventListenerForEscape();
+  overlay.classList.remove('overlay_type_fullscreen');
 }
 
+const listnerLikeButton = (likeButton) => {
+  likeButton.addEventListener('click', function () {
+    likeButton.classList.toggle('element__like-button_cheked');
+  });
+}
+
+const listnerTrashButton = (trashButton, newElement) => {
+  trashButton.addEventListener('click', function () {
+    newElement.remove();
+  });
+}
+
+const listnerItemImage = (itemImage, item) => {
+  itemImage.addEventListener('click', function () {
+    popupImageItem.src = item.link;
+    popupImageItem.alt = item.name;
+    popupImageSubtitle.innerText = item.name;
+    overlay.classList.add('overlay_type_fullscreen');
+    openOverlay(popupImage);
+  });
+}
 
 // функция добавления и обработки элементов
 function createItem(item) {
@@ -81,20 +106,9 @@ function createItem(item) {
   itemImage.alt = item.name;
   itemTitle.innerText = item.name;
 
-  likeButton.addEventListener('click', function () {
-    likeButton.classList.toggle('element__like-button_cheked');
-  });
-
-  trashButton.addEventListener('click', function () {
-    newElement.remove();
-  });
-
-  itemImage.addEventListener('click', function () {
-    popupImageItem.src = item.link;
-    popupImageItem.alt = item.name;
-    popupImageSubtitle.innerText = item.name;
-    openOverlay(popupImage);
-  });
+  listnerLikeButton(likeButton);
+  listnerTrashButton(trashButton, newElement);
+  listnerItemImage(itemImage, item);
 
   return newElement;
 }
@@ -107,6 +121,8 @@ initialCards.forEach(renderItem);
 
 // обработчики событий редактирования профиля
 profileButton.addEventListener('click', function () { // открытие редактирования редактирования профиля
+  popupProfileNameInput.value = profileName.textContent;
+  popupProfileSubtitleInput.value = profileSubtitle.textContent;
   openOverlay(popupProfile);
 });
 
@@ -146,7 +162,6 @@ const listnerEscape = (e) => {
   if(e.key === 'Escape') {
     const openPopup = document.querySelector('.popup_open');
     closeOverlay(openPopup);
-    document.removeEventListener('keydown', listnerEscape);
   }
 }
 
