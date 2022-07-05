@@ -59,11 +59,13 @@ function submitContentFormHandler(e) {
 const openOverlay = function (openPopup) { // открытие оверлея
   overlay.classList.add('overlay_open');
   openPopup.classList.add('popup_open');
+  setEventListenerForEscape();
 }
 
 const closeOverlay = function (openPopup) { // закрытие оверлея
   overlay.classList.remove('overlay_open');
   openPopup.classList.remove('popup_open');
+  removeEventListenerForEscape();
 }
 
 
@@ -103,7 +105,6 @@ function renderItem(item) {
 
 initialCards.forEach(renderItem);
 
-
 // обработчики событий редактирования профиля
 profileButton.addEventListener('click', function () { // открытие редактирования редактирования профиля
   openOverlay(popupProfile);
@@ -139,6 +140,26 @@ overlay.addEventListener('click', function (e) { // закрытие оверл�
     closeOverlay(openPopup);
   }
 });
+
+// функция закрытия по Escape
+const listnerEscape = (e) => {
+  if(e.key === 'Escape') {
+    const openPopup = document.querySelector('.popup_open');
+    closeOverlay(openPopup);
+    document.removeEventListener('keydown', listnerEscape);
+  }
+}
+
+// обработчики Escape
+const setEventListenerForEscape = () => {
+  document.addEventListener('keydown', listnerEscape);
+}
+
+// удаление обработчика Escape
+const removeEventListenerForEscape = () => {
+  document.removeEventListener('keydown', listnerEscape);
+}
+
 
 
 
