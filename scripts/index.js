@@ -1,3 +1,7 @@
+import { Card } from './Card.js';
+import { FormValidator } from './FormValidator.js';
+
+
 // основные элементы страницы
 const root = document.querySelector('.root');
 const elementTemplate = document.querySelector('.element_template').content;
@@ -34,17 +38,15 @@ const popupImageCloseButton = document.querySelector('.popup-fullscreen__button-
 
 
 // функция изменения профиля
-function submitProfileFormHandler(e) {
-  e.preventDefault();
+function submitProfileFormHandler() {
   profileName.textContent = popupProfileNameInput.value;
   profileSubtitle.textContent = popupProfileSubtitleInput.value;
   closeOverlay(popupProfile);
 }
 
 
-// функция добавления контента
-function submitContentFormHandler(e) {
-  e.preventDefault();
+// функция добав ления контента
+function submitContentFormHandler() {
   const placeValue = popupContentPlaceInput.value;
   const linkValue = popupContentLinkInput.value;
   const contentObject = {
@@ -53,13 +55,12 @@ function submitContentFormHandler(e) {
   };
   renderItem(contentObject);
   popupContentForm.reset();
-  toggleButtonState(popupContentInputs, popupContentButton);
   closeOverlay(popupContent);
 }
 
 
 // общие функции
-const openOverlay = function (openPopup) { // открытие оверлея
+export const openOverlay = function (openPopup) { // открытие оверлея
   overlay.classList.add('overlay_open');
   openPopup.classList.add('popup_open');
   setEventListenerForEscape();
@@ -72,49 +73,9 @@ const closeOverlay = function (openPopup) { // закрытие оверлея
   overlay.classList.remove('overlay_type_fullscreen');
 }
 
-const listnerLikeButton = (likeButton) => {
-  likeButton.addEventListener('click', function () {
-    likeButton.classList.toggle('element__like-button_cheked');
-  });
-}
-
-const listnerTrashButton = (trashButton, newElement) => {
-  trashButton.addEventListener('click', function () {
-    newElement.remove();
-  });
-}
-
-const listnerItemImage = (itemImage, item) => {
-  itemImage.addEventListener('click', function () {
-    popupImageItem.src = item.link;
-    popupImageItem.alt = item.name;
-    popupImageSubtitle.innerText = item.name;
-    overlay.classList.add('overlay_type_fullscreen');
-    openOverlay(popupImage);
-  });
-}
-
-// функция добавления и обработки элементов
-function createItem(item) {
-  const newElement = elementTemplate.querySelector('.element').cloneNode(true);
-  const likeButton = newElement.querySelector('.element__like-button');
-  const trashButton = newElement.querySelector('.element__trash-button');
-  const itemImage = newElement.querySelector('.element__image');
-  const itemTitle =  newElement.querySelector('.element__title');
-
-  itemImage.src = item.link;
-  itemImage.alt = item.name;
-  itemTitle.innerText = item.name;
-
-  listnerLikeButton(likeButton);
-  listnerTrashButton(trashButton, newElement);
-  listnerItemImage(itemImage, item);
-
-  return newElement;
-}
-
 function renderItem(item) {
-  elementsList.prepend(createItem(item));
+  const card = new Card(item, '.element_template').createCard();
+  elementsList.prepend(card);
 }
 
 initialCards.forEach(renderItem);
@@ -176,5 +137,21 @@ const removeEventListenerForEscape = () => {
 }
 
 
+// функция запуска валидации и получения из DOM: все формы и все филдсеты в них
+const enableValidation = (form) => {
+  const formList = Array.from(document.querySelectorAll(form.formSelector));
+  formList.forEach((formElement) => {
+    const formCheck = new FormValidator(form, formElement);
+    formCheck.enableValidation();
+  });
+};
 
+// запуск функции валидации
+enableValidation({
+  formSelector: '.popup__form',
+  formFieldsetSelector: '.popup__form-items',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-save',
+  inputErrorClass: 'popup__input_error',
+});
 
