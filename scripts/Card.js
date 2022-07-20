@@ -1,13 +1,11 @@
-import { openOverlay } from "./index.js";
-
 export class Card {
-  constructor(item, cardSelector) {
+  constructor(item, cardSelector, handleCardClick) {
     this._cardSelector = cardSelector;
     this._itemName = item.name;
     this._itemLink = item.link;
     this._handleTrashButtonClick = this._handleTrashButtonClick.bind(this);
     this._handleLikeButtonClick = this._handleLikeButtonClick.bind(this);
-    this._handleImageClick = this._handleImageClick.bind(this);
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -20,46 +18,42 @@ export class Card {
 
   createCard() {
     this._element = this._getTemplate();
+    this._elementImage = this._element.querySelector(".element__image");
+    this._elementLikeButton = this._element.querySelector(
+      ".element__like-button"
+    );
+    this._elementTrashButton = this._element.querySelector(
+      ".element__trash-button"
+    );
+    this._elementTitle = this._element.querySelector(".element__title");
     this._setEventListeners();
-    this._element.querySelector(".element__image").src = this._itemLink;
-    this._element.querySelector(".element__image").alt = this._itemName;
-    this._element.querySelector(".element__title").innerText = this._itemName;
+    this._elementImage.src = this._itemLink;
+    this._elementImage.alt = this._itemName;
+    this._elementTitle.innerText = this._itemName;
     return this._element;
   }
 
   _setEventListeners() {
-    this._element
-      .querySelector(".element__like-button")
-      .addEventListener("click", this._handleLikeButtonClick);
+    this._elementLikeButton.addEventListener(
+      "click",
+      this._handleLikeButtonClick
+    );
 
-    this._element
-      .querySelector(".element__trash-button")
-      .addEventListener("click", this._handleTrashButtonClick);
+    this._elementTrashButton.addEventListener(
+      "click",
+      this._handleTrashButtonClick
+    );
 
-    this._element
-      .querySelector(".element__image")
-      .addEventListener("click", this._handleImageClick);
+    this._elementImage.addEventListener("click", () => {
+      this._handleCardClick(this._itemName, this._itemLink);
+    });
   }
 
   _handleLikeButtonClick() {
-    this._element
-      .querySelector(".element__like-button")
-      .classList.toggle("element__like-button_cheked");
+    this._elementLikeButton.classList.toggle("element__like-button_cheked");
   }
 
   _handleTrashButtonClick() {
     this._element.remove();
-  }
-
-  _handleImageClick() {
-    this._popupImage = document.querySelector(".popup-fullscreen");
-    this._popupImage.querySelector(".popup-fullscreen__image").src =
-      this._itemLink;
-    this._popupImage.querySelector(".popup-fullscreen__image").alt =
-      this._itemName;
-    this._popupImage.querySelector(".popup-fullscreen__subtitle").innerText =
-      this._itemName;
-    document.querySelector(".overlay").classList.add("overlay_type_fullscreen");
-    openOverlay(this._popupImage);
   }
 }

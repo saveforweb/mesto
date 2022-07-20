@@ -1,11 +1,11 @@
 export class FormValidator {
-  constructor(form, formElement) {
-    this._formSelector = form.formSelector;
-    this._formFieldsetSelector = form.formFieldsetSelector;
-    this._inputSelector = form.inputSelector;
-    this._submitButtonSelector = form.submitButtonSelector;
-    this._inputErrorClass = form.inputErrorClass;
-    this._formElement = formElement;
+  constructor(formConfig, form) {
+    this._formSelector = formConfig.formSelector;
+    this._formFieldsetSelector = formConfig.formFieldsetSelector;
+    this._inputSelector = formConfig.inputSelector;
+    this._submitButtonSelector = formConfig.submitButtonSelector;
+    this._inputErrorClass = formConfig.inputErrorClass;
+    this._form = form;
   }
 
   enableValidation() {
@@ -35,28 +35,39 @@ export class FormValidator {
   };
 
   _showInputError (inputElement) {
-    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    const errorElement = this._form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = inputElement.validationMessage;
   };
 
   _hideInputError = (inputElement) => {
-    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    const errorElement = this._form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.textContent = '';
   };
 
+  resetValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+  }
+
+  resetForm() {
+    this._form.reset();
+  }
+
   _setEventListeners() {
-    this._formElement.addEventListener("submit",(e) => {
+    this._form.addEventListener("submit",(e) => {
       e.preventDefault();
-      this._toggleButtonState();
+      this.resetValidation();
     });
 
-    const fieldsetList = Array.from(
-      this._formElement.querySelectorAll(this._formFieldsetSelector)
+    this._fieldsetList = Array.from(
+      this._form.querySelectorAll(this._formFieldsetSelector)
     );
 
-    fieldsetList.forEach((fieldSet) => {
+    this._fieldsetList.forEach((fieldSet) => {
       this._inputList = Array.from(
         fieldSet.querySelectorAll(this._inputSelector)
       );

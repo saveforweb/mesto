@@ -1,41 +1,31 @@
 import { Card } from './Card.js';
 import { FormValidator } from './FormValidator.js';
 
-
 // основные элементы страницы
-const root = document.querySelector('.root');
-const elementTemplate = document.querySelector('.element_template').content;
 const elementsList = document.querySelector('.elements__list');
 const overlay = document.querySelector('.overlay');
 const profileButton = document.querySelector('.profile__edit-button');
 const contentButton = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__name');
 const profileSubtitle = document.querySelector('.profile__subtitle');
-
+const popupCloseButton = document.querySelectorAll('.popup__button-close');
 
 // элементы окна редактирования профиля
 const popupProfile = document.querySelector('.popup-profile');
-const popupProfileCloseButton = popupProfile.querySelector('.popup__button-close_type_profile');
 const popupProfileForm = document.querySelector('.popup__form_type_profile');
 const popupProfileNameInput = document.querySelector('.popup__input_type_profile-name');
 const popupProfileSubtitleInput = document.querySelector('.popup__input_type_profile-subtitle');
 
-
 // элементы окна редактирования контента
 const popupContent = document.querySelector('.popup-content');
-const popupContentCloseButton = document.querySelector('.popup__button-close_type_content');
 const popupContentForm = document.querySelector('.popup__form_type_content');
 const popupContentPlaceInput = document.querySelector('.popup__input_type-content-place');
 const popupContentLinkInput = document.querySelector('.popup__input_type-content-link');
-const popupContentInputs = [popupContentPlaceInput, popupContentLinkInput];
-const popupContentButton = popupContentForm.querySelector('.popup__button-save');
 
 // элементы окна просмотра изображений
 const popupImage = document.querySelector('.popup-fullscreen');
 const popupImageItem = document.querySelector('.popup-fullscreen__image');
 const popupImageSubtitle = document.querySelector('.popup-fullscreen__subtitle');
-const popupImageCloseButton = document.querySelector('.popup-fullscreen__button-close');
-
 
 // функция изменения профиля
 function submitProfileFormHandler() {
@@ -43,7 +33,6 @@ function submitProfileFormHandler() {
   profileSubtitle.textContent = popupProfileSubtitleInput.value;
   closeOverlay(popupProfile);
 }
-
 
 // функция добав ления контента
 function submitContentFormHandler() {
@@ -54,27 +43,34 @@ function submitContentFormHandler() {
     link: linkValue
   };
   renderItem(contentObject);
-  popupContentForm.reset();
+  formEditContent.resetForm();
   closeOverlay(popupContent);
 }
 
-
 // общие функции
-export const openOverlay = function (openPopup) { // открытие оверлея
+const openOverlay = function (openPopup) { // открытие оверлея
   overlay.classList.add('overlay_open');
   openPopup.classList.add('popup_open');
   setEventListenerForEscape();
 }
 
-const closeOverlay = function (openPopup) { // закрытие оверлея
+const closeOverlay = function () { // закрытие оверлея
+  overlay.querySelector('.popup_open').classList.remove('popup_open');
   overlay.classList.remove('overlay_open');
-  openPopup.classList.remove('popup_open');
-  removeEventListenerForEscape();
   overlay.classList.remove('overlay_type_fullscreen');
+  removeEventListenerForEscape();
+}
+
+const handleCardClick = (subtitle, link) => {
+  popupImageItem.src = link;
+  popupImageItem.alt = subtitle;
+  popupImageSubtitle.innerText = subtitle;
+  overlay.classList.add("overlay_type_fullscreen");
+  openOverlay(popupImage);
 }
 
 function renderItem(item) {
-  const card = new Card(item, '.element_template').createCard();
+  const card = new Card(item, '.element_template', handleCardClick).createCard();
   elementsList.prepend(card);
 }
 
@@ -85,44 +81,39 @@ profileButton.addEventListener('click', function () { // открытие ред
   popupProfileNameInput.value = profileName.textContent;
   popupProfileSubtitleInput.value = profileSubtitle.textContent;
   openOverlay(popupProfile);
+  formEditProfile.resetValidation();
 });
 
 popupProfileForm.addEventListener('submit', submitProfileFormHandler); // отправка формы редактирования профиля
 
-popupProfileCloseButton.addEventListener('click', function () { // закрытие редактирование профиля на крестик
-  closeOverlay(popupProfile);
-});
-
-
 // обработчики событий редактирования контента
-contentButton.addEventListener('click', function (e) { // открытие редактирования добавления контента
+contentButton.addEventListener('click', (e) => { // открытие редактирования добавления контента
   openOverlay(popupContent);
+  formEditContent.resetForm();
+  formEditContent.resetValidation();
 });
 
 popupContentForm.addEventListener('submit', submitContentFormHandler); // отправка формы редактирования контента
 
-popupContentCloseButton.addEventListener('click', function () { // закрытие редактирование контента на крестик
-  closeOverlay(popupContent);
-});
+// Закрытие оверлея
+// закрытие на крестик
+popupCloseButton.forEach((button) => {
+  button.addEventListener('click', function () {
+    closeOverlay();
+  });
+})
 
-// обработчики фуллскрин
-popupImageCloseButton.addEventListener('click', function () { // закрытие фуллскрин
-  closeOverlay(popupImage);
-});
-
-// общие обработчики
-overlay.addEventListener('click', function (e) { // закрытие оверлея по клику на фон
+// закрытие оверлея по клику на фон
+overlay.addEventListener('mousedown', function (e) {
   if (e.target === e.currentTarget) {
-    const openPopup = document.querySelector('.popup_open');
-    closeOverlay(openPopup);
+    closeOverlay();
   }
 });
 
-// функция закрытия по Escape
+// закрытия оверлея по Escape
 const listnerEscape = (e) => {
   if(e.key === 'Escape') {
-    const openPopup = document.querySelector('.popup_open');
-    closeOverlay(openPopup);
+    closeOverlay();
   }
 }
 
@@ -136,22 +127,21 @@ const removeEventListenerForEscape = () => {
   document.removeEventListener('keydown', listnerEscape);
 }
 
-
-// функция запуска валидации и получения из DOM: все формы и все филдсеты в них
-const enableValidation = (form) => {
-  const formList = Array.from(document.querySelectorAll(form.formSelector));
-  formList.forEach((formElement) => {
-    const formCheck = new FormValidator(form, formElement);
-    formCheck.enableValidation();
-  });
-};
-
-// запуск функции валидации
-enableValidation({
+const formConfig = {
   formSelector: '.popup__form',
   formFieldsetSelector: '.popup__form-items',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button-save',
   inputErrorClass: 'popup__input_error',
-});
+}
+
+const formEditProfile = new FormValidator(formConfig, popupProfileForm);
+const formEditContent = new FormValidator(formConfig, popupContentForm);
+
+formEditProfile.enableValidation();
+formEditContent.enableValidation();
+
+
+
+
 
