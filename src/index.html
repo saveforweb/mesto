@@ -4,20 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
     <title>Mesto Russia</title>
   </head>
 
   <body class="root">
     <div class="page">
       <header class="header">
-        <img src="./images/logo.svg" alt="Место Россия" class="header__logo" />
+        <img src="<%=require('./images/logo.svg')%>"  alt="Место Россия" class="header__logo" />
+
+
       </header>
       <main class="content">
         <section class="profile">
           <div class="profile__main">
             <img
-              src="./images/profile-avatar.jpg"
+              src="<%=require('./images/profile-avatar.jpg')%>"
               alt=""
               class="profile__avatar"
             />
@@ -39,8 +40,11 @@
         <p class="footer__copyright">&copy;&nbsp;2020 Mesto Russia</p>
       </footer>
     </div>
-    <div class="overlay">
-      <div class="popup popup-profile">
+
+
+
+    <div class="popup popup-profile">
+      <div class="popup__window">
         <button
           type="button"
           class="popup__button-close popup__button-close_type_profile"
@@ -56,7 +60,7 @@
               type="text"
               id="name"
               name="name"
-              value="Жак-Ив Кусто"
+              value=""
               placeholder="Имя"
               class="popup__input popup__input_type_profile-name"
               minlength="2"
@@ -69,7 +73,7 @@
               id="subtitle"
               name="subtitle"
               placeholder="Роль"
-              value="Исследователь океана"
+              value=""
               class="popup__input popup__input_type_profile-subtitle"
               minlength="2"
               maxlength="200"
@@ -80,8 +84,11 @@
           </fieldset>
         </form>
       </div>
+    </div>
 
-      <div class="popup popup-content">
+
+    <div class="popup popup-content">
+      <div class="popup__window">
         <button
           type="button"
           class="popup__button-close popup__button-close_type_content"
@@ -119,13 +126,15 @@
           </fieldset>
         </form>
       </div>
-
-      <div class="popup-fullscreen">
-        <button type="button" class="popup-fullscreen__button-close"></button>
-        <img src="#" alt=" " class="popup-fullscreen__image" />
-        <p class="popup-fullscreen__subtitle"></p>
       </div>
-    </div>
+
+      <div class="popup popup_type_fullscreen popup-fullscreen">
+        <div class="popup__window-fullscreen">
+          <button type="button" class="popup__button-close popup__button-close_type_fullscreen"></button>
+          <img src="#" alt=" " class="popup__image" />
+          <p class="popup__subtitle"></p>
+        </div>
+      </div>
 
     <template class="element_template">
       <li class="element">
@@ -142,9 +151,5 @@
       </li>
     </template>
 
-    <script src="./scripts/data.js"></script>
-    <script type="module" src="./scripts/index.js"></script>
-    <script type="module" src="./scripts/Card.js"></script>
-    <script type="module" src="./scripts/FormValidator.js"></script>
   </body>
 </html>

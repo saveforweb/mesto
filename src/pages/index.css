@@ -32,21 +32,24 @@
 @import url(../blocks/overlay/_open/overlay_open.css);
 @import url(../blocks/overlay/_type/overlay_type_fullscreen.css);
 
-@import url(../blocks/popup-fullscreen/popup-fullscreen.css);
-@import url(../blocks/popup-fullscreen/__image/popup-fullscreen__image.css);
-@import url(../blocks/popup-fullscreen/__subtitle/popup-fullscreen__subtitle.css);
-@import url(../blocks/popup-fullscreen/__button-close/popup-fullscreen__button-close.css);
+
+@import url(../blocks/popup/__image/popup__image.css);
+@import url(../blocks/popup/__subtitle/popup__subtitle.css);
 
 
 
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_type/popup_type_fullscreen.css);
+@import url(../blocks/popup/_open/popup_open.css);
+@import url(../blocks/popup/__window/popup__window.css);
+@import url(../blocks/popup/__window-fullscreen/popup__window-fullscreen.css);
 @import url(../blocks/popup/__title/popup__title.css);
+@import url(../blocks/popup/__button-close/popup__button-close.css);
+
+
 @import url(../blocks/popup/__label/popup__label.css);
 @import url(../blocks/popup/__input/popup__input.css);
 @import url(../blocks/popup/__button-save/popup__button-save.css);
-@import url(../blocks/popup/__button-close/popup__button-close.css);
-@import url(../blocks/popup/_open/popup_open.css);
-
 @import url(../blocks/popup/__error/popup__error.css);
 @import url(../blocks/popup/__form-items/popup__form-items.css);
 @import url(../blocks/popup/__input/_error/popup__input_error.css);

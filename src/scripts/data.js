@@ -1,5 +1,4 @@
-// массив данных
-const initialCards = [
+export const initialCards = [
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -25,3 +24,11 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
+
+export const formConfig = {
+  formSelector: ".popup__form",
+  formFieldsetSelector: ".popup__form-items",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button-save",
+  inputErrorClass: "popup__input_error",
+};
