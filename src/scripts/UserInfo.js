@@ -1,23 +1,23 @@
 export class UserInfo {
-  constructor(selectorUserName, selectorUserDescription, elementProfileFormNameInput, elementProfileFormSubtitleInput) {
-    this._selectorUserName = selectorUserName;
-    this._selectorUserDescription = selectorUserDescription;
+  constructor(elementUserName, elementUserDescription, elementProfileFormNameInput, elementProfileFormSubtitleInput) {
+    this._elementUserName = elementUserName;
+    this._elementUserDescription = elementUserDescription;
     this._elementProfileFormNameInput = elementProfileFormNameInput;
     this._elementProfileFormSubtitleInput = elementProfileFormSubtitleInput;
   }
 
   getUserInfo() {
     this._dataUser = {
-      name: this._selectorUserName.textContent,
-      description: this._selectorUserDescription.textContent
+      name: this._elementUserName.textContent,
+      subtitle: this._elementUserDescription.textContent
     }
     return this._dataUser;
   }
 
-  setUserInfo({name, description}) {
-    this._selectorUserName.textContent = name;
-    this._selectorUserDescription.textContent = description;
-    this._elementProfileFormNameInput.value = name;
-    this._elementProfileFormSubtitleInput.value = description;
+  setUserInfo({name, subtitle}) {
+    this._elementUserName.textContent = name;
+    this._elementUserDescription.textContent = subtitle;
+    // this._elementProfileFormNameInput.value = name;
+    // this._elementProfileFormSubtitleInput.value = subtitle;
   }
 }

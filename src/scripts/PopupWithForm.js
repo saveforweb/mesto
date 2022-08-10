@@ -1,32 +1,28 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
-  constructor(elementPopup, selectorCloseButton, submitFormHandler){
+  constructor(elementPopup, selectorCloseButton, handleSubmitButton){
     super(elementPopup, selectorCloseButton);
-    this._submitFormHandler = submitFormHandler;
+    this._handleSubmitButton = handleSubmitButton;
+    this._inputList = Array.from(this._elementPopup.querySelectorAll('input'));
   }
 
   _getInputValues() {
-    this._setInputList = Array.from(this._elementPopup.querySelectorAll('input'));
-    return this._setInputValues = this._setInputList.map(item => {
-      return {
-        name: item.name,
-        value: item.value
-      }
-    });
+    const values = {};
+    this._inputList.forEach((input) => {values[input.name] = input.value});
+    return values;
   }
 
   close() {
-    this._elementPopup.classList.remove("popup_open");
-    this.removeEventListeners();
+    super.close()
     this._elementPopup.querySelector('form').reset();
   }
 
   setEventListeners() {
-    document.addEventListener("keydown", this._handleEscClose);
-    this._elementPopup.addEventListener("mousedown", this._handleClickClose);
-    this._elementPopup.querySelector(this._selectorCloseButton).addEventListener("mousedown", this._handleClickClose);
-    this._elementPopup.querySelector('form').addEventListener("submit", this._submitFormHandler);
+    super.setEventListeners();
+    this._elementPopup.querySelector('form').addEventListener("submit", () => {
+      this._handleSubmitButton(this._getInputValues());
+    });
   }
 
 }

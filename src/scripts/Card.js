@@ -1,8 +1,8 @@
 export class Card {
-  constructor(item, cardSelector, handleCardClick) {
+  constructor({name, link}, cardSelector, handleCardClick) {
     this._cardSelector = cardSelector;
-    this._itemName = item.name;
-    this._itemLink = item.link;
+    this._itemName = name;
+    this._itemLink = link;
     this._handleTrashButtonClick = this._handleTrashButtonClick.bind(this);
     this._handleLikeButtonClick = this._handleLikeButtonClick.bind(this);
     this._handleCardClick = handleCardClick;
@@ -44,9 +44,11 @@ export class Card {
       this._handleTrashButtonClick
     );
 
-    this._elementImage.addEventListener("click", () => {
-      this._handleCardClick.open(this._itemName, this._itemLink);
-    });
+    this._elementImage.addEventListener(
+      "click", () => {
+        this._handleCardClick({ subtitle: this._itemName, link: this._itemLink });
+      }
+    );
   }
 
   _handleLikeButtonClick() {
@@ -55,5 +57,6 @@ export class Card {
 
   _handleTrashButtonClick() {
     this._element.remove();
+    this._element = null;
   }
 }

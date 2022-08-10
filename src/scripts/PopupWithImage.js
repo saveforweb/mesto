@@ -5,13 +5,13 @@ export class PopupWithImage extends Popup {
     super(elementPopup, selectorCloseButton);
     this._elementPopupImageItem = elementPopupImageItem;
     this._elementPopupImageSubtitle = elementPopupImageSubtitle;
+    this.open = this.open.bind(this);
   }
 
-  open(subtitle, link) {
+  open({subtitle, link}) {
+    super.open()
     this._elementPopupImageItem.src = link;
     this._elementPopupImageSubtitle.alt = subtitle;
     this._elementPopupImageSubtitle.innerText = subtitle;
-    this._elementPopup.classList.add("popup_open");
-    this.setEventListeners();
   }
 }

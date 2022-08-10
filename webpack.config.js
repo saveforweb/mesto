@@ -4,11 +4,12 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: { main: "./src/scripts/index.js" },
+  entry: { main: "./src/pages/index.js" },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
     publicPath: "",
+    assetModuleFilename: 'images/[hash][ext][query]'
   },
   mode: "development",
   devServer: {
@@ -33,6 +34,13 @@ module.exports = {
         // регулярное выражение, которое ищет все файлы с такими расширениями
         test: /\.(png|svg|jpg|gif|woff(2)?|eot|ttf|otf)$/,
         type: 'asset/resource'
+      },
+      {
+        test: /\.(woff(2)?|eot|ttf|otf)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[hash][ext][query]'
+        }
       },
       {
         // применять это правило только к CSS-файлам
