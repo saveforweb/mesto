@@ -17,7 +17,5 @@ export class UserInfo {
   setUserInfo({name, subtitle}) {
     this._elementUserName.textContent = name;
     this._elementUserDescription.textContent = subtitle;
-    // this._elementProfileFormNameInput.value = name;
-    // this._elementProfileFormSubtitleInput.value = subtitle;
   }
 }
