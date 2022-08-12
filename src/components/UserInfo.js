@@ -1,9 +1,7 @@
 export class UserInfo {
-  constructor(elementUserName, elementUserDescription, elementProfileFormNameInput, elementProfileFormSubtitleInput) {
+  constructor(elementUserName, elementUserDescription) {
     this._elementUserName = elementUserName;
     this._elementUserDescription = elementUserDescription;
-    this._elementProfileFormNameInput = elementProfileFormNameInput;
-    this._elementProfileFormSubtitleInput = elementProfileFormSubtitleInput;
   }
 
   getUserInfo() {

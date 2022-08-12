@@ -23,7 +23,7 @@ const popupImageElement = document.querySelector(".popup-fullscreen");
 const popupImageItem = document.querySelector(".popup__image");
 const popupImageSubtitle = document.querySelector(".popup__subtitle");
 
-function handleprofileFormSubmit(data) {
+function handleProfileFormSubmit(data) {
   userInfo.setUserInfo(data);
   popupProfile.close();
 }
@@ -34,9 +34,9 @@ function handleAddCardFormSubmit({place: name, link: link}) {
   popupContent.close();
 }
 
-const userInfo = new UserInfo(profileName, profileSubtitle, profileFormNameInput, profileFormSubtitleInput);
+const userInfo = new UserInfo(profileName, profileSubtitle);
 
-const popupProfile = new PopupWithForm(popupProfileElement, '.popup__button-close', handleprofileFormSubmit);
+const popupProfile = new PopupWithForm(popupProfileElement, '.popup__button-close', handleProfileFormSubmit);
 const popupContent = new PopupWithForm(popupContentElement, '.popup__button-close', handleAddCardFormSubmit);
 const popupImage = new PopupWithImage(popupImageElement, '.popup__button-close', popupImageItem, popupImageSubtitle);
 popupProfile.setEventListeners();
