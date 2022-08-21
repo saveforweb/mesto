@@ -134,7 +134,7 @@ function handleApproveButton(id, element, button) {
     });
 }
 
-function handleAvatarFormSubmit ({link: link}, button){
+function handleAvatarFormSubmit ({avatarlink: link}, button){
   renderLoading(true, button, "Сохранение...");
   api
     .updateUserAvatar(link)
