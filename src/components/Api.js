@@ -66,6 +66,23 @@ export class Api {
       })
   }
 
+  updateUserAvatar(link) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        avatar: link,
+      }),
+      headers: this._headers
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+  }
+
   addCardLike(id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes `, {
       method: 'PUT',

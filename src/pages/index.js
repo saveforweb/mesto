@@ -18,6 +18,7 @@ const profileName = document.querySelector(".profile__name");
 const profileSubtitle = document.querySelector(".profile__subtitle");
 const profileAvatar = document.querySelector(".profile__avatar");
 const popupProfileElement = document.querySelector(".popup-profile");
+const popupAvatarElement = document.querySelector(".popup-avatar");
 const profileForm = document.querySelector(".popup__form_type_profile");
 const profileFormNameInput = document.querySelector(
   ".popup__input_type_profile-name"
@@ -28,9 +29,12 @@ const profileFormSubtitleInput = document.querySelector(
 const popupContentElement = document.querySelector(".popup-content");
 const popupDeleteElement = document.querySelector(".popup-approve");
 const contentForm = document.querySelector(".popup__form_type_content");
+const avatarForm = document.querySelector(".popup__form_type_avatar");
 const popupImageElement = document.querySelector(".popup-fullscreen");
 const popupImageItem = document.querySelector(".popup__image");
 const popupImageSubtitle = document.querySelector(".popup__subtitle");
+
+const avatarContainer = document.querySelector(".profile__avatar-container");
 
 const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-48",
@@ -42,7 +46,7 @@ const api = new Api({
 
 let userId = "error: none";
 
-const promises = [api.getInitialCards(), api.getUserInfo()]
+const promises = [api.getInitialCards(), api.getUserInfo()];
 
 Promise.all(promises)
   .then((results) => {
@@ -62,19 +66,32 @@ function handleLikeStatus(likes, likeButton) {
   });
 }
 
-function handleProfileFormSubmit(data) {
+function renderLoading(isLoading, button, text) {
+  if (isLoading) {
+    button.innerText = text;
+  } else {
+    button.innerText = text;
+  }
+}
+
+function handleProfileFormSubmit(data, button) {
+  renderLoading(true, button, "Сохранение...");
   api
     .updateUserInfo(data.name, data.subtitle)
     .then((result) => {
       userInfo.setUserInfo(result);
+      popupProfile.close();
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, button, "Сохранить");
     });
-  popupProfile.close();
 }
 
-function handleAddCardFormSubmit({ place: name, link: link }) {
+function handleAddCardFormSubmit({ place: name, link: link }, button) {
+  renderLoading(true, button, "Сохранение...");
   api
     .addUserCard(name, link)
     .then((result) => {
@@ -85,19 +102,23 @@ function handleAddCardFormSubmit({ place: name, link: link }) {
           popupImage.open,
           handleAddLike,
           handleRemoveLike,
-          handleLikeStatus
+          handleLikeStatus,
+          handleTrashButton
         ).createCard()
       );
+      formEditContent.resetForm();
+      popupContent.close();
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, button, "Создать");
     });
-
-  formEditContent.resetForm();
-  popupContent.close();
 }
 
-function handleApproveButton(id, element) {
+function handleApproveButton(id, element, button) {
+  renderLoading(true, button, "Удаление...");
   api
     .deleleCard(id)
     .then((result) => {
@@ -107,7 +128,27 @@ function handleApproveButton(id, element) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, button, "Да");
     });
+}
+
+function handleAvatarFormSubmit ({link: link}, button){
+  renderLoading(true, button, "Сохранение...");
+  api
+    .updateUserAvatar(link)
+    .then((result) => {
+      userInfo.setUserInfo(result);
+      popupEditAvatar.close();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, button, "Сохранить");
+    });
+
 }
 
 function handleTrashButton() {
@@ -160,16 +201,31 @@ const popupDeleteItem = new PopupWithApprove(
   handleApproveButton
 );
 
+const popupEditAvatar = new PopupWithForm(
+  popupAvatarElement,
+  ".popup__button-close",
+  handleAvatarFormSubmit
+);
+
+
+
+
+
+
+
 popupDeleteItem.setEventListeners();
 popupProfile.setEventListeners();
 popupContent.setEventListeners();
 popupImage.setEventListeners();
+popupEditAvatar.setEventListeners();
 
 const formEditProfile = new FormValidator(formConfig, profileForm);
 const formEditContent = new FormValidator(formConfig, contentForm);
+const formEditAvatar = new FormValidator(formConfig, avatarForm);
 
 formEditProfile.enableValidation();
 formEditContent.enableValidation();
+formEditAvatar.enableValidation();
 
 profileButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
@@ -177,6 +233,11 @@ profileButton.addEventListener("click", () => {
   profileFormSubtitleInput.value = userData.about;
   formEditProfile.resetValidation();
   popupProfile.open();
+});
+
+avatarContainer.addEventListener("click", () => {
+  formEditAvatar.resetValidation();
+  popupEditAvatar.open();
 });
 
 contentButton.addEventListener("click", () => {
@@ -197,21 +258,19 @@ const itemList = new Section(
           handleAddLike,
           handleRemoveLike,
           handleLikeStatus,
-            handleTrashButton
-          ).createCard();
-        } else {
-          return new Card(
-            item,
-            ".element_template",
-            popupImage.open,
-            handleAddLike,
-            handleRemoveLike,
-            handleLikeStatus
-          ).createCard();
-        }
-      },
+          handleTrashButton
+        ).createCard();
+      } else {
+        return new Card(
+          item,
+          ".element_template",
+          popupImage.open,
+          handleAddLike,
+          handleRemoveLike,
+          handleLikeStatus
+        ).createCard();
+      }
     },
-    сardsContainer
-  );
-
-
+  },
+  сardsContainer
+);
