@@ -31,6 +31,8 @@ import { PopupWithApprove } from "../components/PopupWithApprove.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Api } from "../components/Api.js";
 
+let userId = "error: none";
+
 const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-48",
   headers: {
@@ -39,19 +41,51 @@ const api = new Api({
   },
 });
 
-let userId = "error: none";
-
 const promises = [api.getInitialCards(), api.getUserInfo()];
 
-Promise.all(promises)
-  .then((results) => {
-    userId = results[1]._id;
-    itemList.renderItems(results[0]);
-    userInfo.setUserInfo(results[1]);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const popupProfile = new PopupWithForm(
+  popupProfileElement,
+  ".popup__button-close",
+  handleProfileFormSubmit
+);
+
+const popupContent = new PopupWithForm(
+  popupContentElement,
+  ".popup__button-close",
+  handleAddCardFormSubmit
+);
+const popupImage = new PopupWithImage(
+  popupImageElement,
+  ".popup__button-close",
+  popupImageItem,
+  popupImageSubtitle
+);
+const popupDeleteItem = new PopupWithApprove(
+  popupDeleteElement,
+  ".popup__button-close",
+  handleApproveButton
+);
+
+const popupEditAvatar = new PopupWithForm(
+  popupAvatarElement,
+  ".popup__button-close",
+  handleAvatarFormSubmit
+);
+
+const formEditProfile = new FormValidator(formConfig, profileForm);
+const formEditContent = new FormValidator(formConfig, contentForm);
+const formEditAvatar = new FormValidator(formConfig, avatarForm);
+
+const userInfo = new UserInfo(profileName, profileSubtitle, profileAvatar);
+
+const itemList = new Section(
+  {
+    render: (item) => {
+      return createCard(item);
+    },
+  },
+  сardsContainer
+);
 
 function handleProfileFormSubmit(data) {
   popupProfile.renderLoading(true, "Сохранение...");
@@ -144,69 +178,6 @@ function handleRemoveLike(id, card) {
     });
 }
 
-const popupProfile = new PopupWithForm(
-  popupProfileElement,
-  ".popup__button-close",
-  handleProfileFormSubmit
-);
-
-const popupContent = new PopupWithForm(
-  popupContentElement,
-  ".popup__button-close",
-  handleAddCardFormSubmit
-);
-const popupImage = new PopupWithImage(
-  popupImageElement,
-  ".popup__button-close",
-  popupImageItem,
-  popupImageSubtitle
-);
-const popupDeleteItem = new PopupWithApprove(
-  popupDeleteElement,
-  ".popup__button-close",
-  handleApproveButton
-);
-
-const popupEditAvatar = new PopupWithForm(
-  popupAvatarElement,
-  ".popup__button-close",
-  handleAvatarFormSubmit
-);
-
-popupDeleteItem.setEventListeners();
-popupProfile.setEventListeners();
-popupContent.setEventListeners();
-popupImage.setEventListeners();
-popupEditAvatar.setEventListeners();
-
-const formEditProfile = new FormValidator(formConfig, profileForm);
-const formEditContent = new FormValidator(formConfig, contentForm);
-const formEditAvatar = new FormValidator(formConfig, avatarForm);
-
-formEditProfile.enableValidation();
-formEditContent.enableValidation();
-formEditAvatar.enableValidation();
-
-profileButton.addEventListener("click", () => {
-  const userData = userInfo.getUserInfo();
-  profileFormNameInput.value = userData.name;
-  profileFormSubtitleInput.value = userData.about;
-  formEditProfile.resetValidation();
-  popupProfile.open();
-});
-
-avatarContainer.addEventListener("click", () => {
-  formEditAvatar.resetValidation();
-  popupEditAvatar.open();
-});
-
-contentButton.addEventListener("click", () => {
-  formEditContent.resetValidation();
-  popupContent.open();
-});
-
-const userInfo = new UserInfo(profileName, profileSubtitle, profileAvatar);
-
 function createCard(item) {
   const card = new Card(
     item,
@@ -221,11 +192,47 @@ function createCard(item) {
   return card.createCard();
 }
 
-const itemList = new Section(
-  {
-    render: (item) => {
-      return createCard(item);
-    },
-  },
-  сardsContainer
-);
+
+popupDeleteItem.setEventListeners();
+popupProfile.setEventListeners();
+popupContent.setEventListeners();
+popupImage.setEventListeners();
+popupEditAvatar.setEventListeners();
+
+formEditProfile.enableValidation();
+formEditContent.enableValidation();
+formEditAvatar.enableValidation();
+
+profileButton.addEventListener("click", () => {
+  const userData = userInfo.getUserInfo();
+  profileFormNameInput.value = userData.name;
+  profileFormSubtitleInput.value = userData.about;
+  formEditProfile.resetValidation();
+  popupProfile.open();
+});
+
+avatarContainer.addEventListener("click", () => {
+  formEditAvatar.resetForm();
+  formEditAvatar.resetValidation();
+  popupEditAvatar.open();
+});
+
+contentButton.addEventListener("click", () => {
+  formEditContent.resetForm();
+  formEditContent.resetValidation();
+  popupContent.open();
+});
+
+Promise.all(promises)
+  .then((results) => {
+    userId = results[1]._id;
+    itemList.renderItems(results[0]);
+    userInfo.setUserInfo(results[1]);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+
+
+
