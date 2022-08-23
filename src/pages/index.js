@@ -1,8 +1,28 @@
 import "../pages/index.css";
 
-import { formConfig } from "../components/data.js";
+import {
+  formConfig,
+  сardsContainer,
+  profileButton,
+  contentButton,
+  profileName,
+  profileSubtitle,
+  profileAvatar,
+  popupProfileElement,
+  popupAvatarElement,
+  profileForm,
+  profileFormNameInput,
+  profileFormSubtitleInput,
+  popupContentElement,
+  popupDeleteElement,
+  contentForm,
+  avatarForm,
+  popupImageElement,
+  popupImageItem,
+  popupImageSubtitle,
+  avatarContainer,
+} from "../utils/data.js";
 import { Card } from "../components/Card.js";
-import { userCard } from "../components/userCard.js";
 import { Section } from "../components/Section.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
@@ -10,31 +30,6 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithApprove } from "../components/PopupWithApprove.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Api } from "../components/Api.js";
-
-const сardsContainer = document.querySelector(".elements__list");
-const profileButton = document.querySelector(".profile__edit-button");
-const contentButton = document.querySelector(".profile__add-button");
-const profileName = document.querySelector(".profile__name");
-const profileSubtitle = document.querySelector(".profile__subtitle");
-const profileAvatar = document.querySelector(".profile__avatar");
-const popupProfileElement = document.querySelector(".popup-profile");
-const popupAvatarElement = document.querySelector(".popup-avatar");
-const profileForm = document.querySelector(".popup__form_type_profile");
-const profileFormNameInput = document.querySelector(
-  ".popup__input_type_profile-name"
-);
-const profileFormSubtitleInput = document.querySelector(
-  ".popup__input_type_profile-subtitle"
-);
-const popupContentElement = document.querySelector(".popup-content");
-const popupDeleteElement = document.querySelector(".popup-approve");
-const contentForm = document.querySelector(".popup__form_type_content");
-const avatarForm = document.querySelector(".popup__form_type_avatar");
-const popupImageElement = document.querySelector(".popup-fullscreen");
-const popupImageItem = document.querySelector(".popup__image");
-const popupImageSubtitle = document.querySelector(".popup__subtitle");
-
-const avatarContainer = document.querySelector(".profile__avatar-container");
 
 const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-48",
@@ -58,24 +53,8 @@ Promise.all(promises)
     console.log(err);
   });
 
-function handleLikeStatus(likes, likeButton) {
-  likes.forEach((like) => {
-    if (userId === like._id) {
-      likeButton.classList.add("element__like-button_cheked");
-    }
-  });
-}
-
-function renderLoading(isLoading, button, text) {
-  if (isLoading) {
-    button.innerText = text;
-  } else {
-    button.innerText = text;
-  }
-}
-
-function handleProfileFormSubmit(data, button) {
-  renderLoading(true, button, "Сохранение...");
+function handleProfileFormSubmit(data) {
+  popupProfile.renderLoading(true, "Сохранение...");
   api
     .updateUserInfo(data.name, data.subtitle)
     .then((result) => {
@@ -86,26 +65,16 @@ function handleProfileFormSubmit(data, button) {
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false, button, "Сохранить");
+      popupProfile.renderLoading(false, "Сохранить");
     });
 }
 
-function handleAddCardFormSubmit({ place: name, link: link }, button) {
-  renderLoading(true, button, "Сохранение...");
+function handleAddCardFormSubmit({ place: name, link: link }) {
+  popupContent.renderLoading(true, "Сохранение...");
   api
     .addUserCard(name, link)
     .then((result) => {
-      itemList.addItem(
-        new userCard(
-          result,
-          ".element_template",
-          popupImage.open,
-          handleAddLike,
-          handleRemoveLike,
-          handleLikeStatus,
-          handleTrashButton
-        ).createCard()
-      );
+      itemList.addItem(createCard(result));
       formEditContent.resetForm();
       popupContent.close();
     })
@@ -113,29 +82,28 @@ function handleAddCardFormSubmit({ place: name, link: link }, button) {
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false, button, "Создать");
+      popupContent.renderLoading(false, "Создать");
     });
 }
 
-function handleApproveButton(id, element, button) {
-  renderLoading(true, button, "Удаление...");
+function handleApproveButton(id, card) {
+  popupDeleteItem.renderLoading(true, "Удаление...");
   api
     .deleleCard(id)
     .then((result) => {
-      element.remove();
-      element = null;
+      card.removeCard();
       popupDeleteItem.close();
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false, button, "Да");
+      popupDeleteItem.renderLoading(false, "Да");
     });
 }
 
-function handleAvatarFormSubmit ({avatarlink: link}, button){
-  renderLoading(true, button, "Сохранение...");
+function handleAvatarFormSubmit({ avatarlink: link }) {
+  popupEditAvatar.renderLoading(true, "Сохранение...");
   api
     .updateUserAvatar(link)
     .then((result) => {
@@ -146,33 +114,30 @@ function handleAvatarFormSubmit ({avatarlink: link}, button){
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false, button, "Сохранить");
+      popupEditAvatar.renderLoading(false, "Сохранить");
     });
-
 }
 
-function handleTrashButton() {
-  popupDeleteItem.open(this._itemId, this._element);
+function handleTrashButton(card) {
+  popupDeleteItem.open(this._itemId, card);
 }
 
-function handleAddLike(id) {
+function handleAddLike(id, card) {
   api
     .addCardLike(id)
     .then((result) => {
-      this._elemetLikeCount.innerText = result.likes.length;
-      this._elementLikeButton.classList.add("element__like-button_cheked");
+      card.addLike(result.likes.length);
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function handleRemoveLike(id) {
+function handleRemoveLike(id, card) {
   api
     .removeCardLike(id)
     .then((result) => {
-      this._elemetLikeCount.innerText = result.likes.length;
-      this._elementLikeButton.classList.remove("element__like-button_cheked");
+      card.removeLike(result.likes.length);
     })
     .catch((err) => {
       console.log(err);
@@ -184,6 +149,7 @@ const popupProfile = new PopupWithForm(
   ".popup__button-close",
   handleProfileFormSubmit
 );
+
 const popupContent = new PopupWithForm(
   popupContentElement,
   ".popup__button-close",
@@ -206,12 +172,6 @@ const popupEditAvatar = new PopupWithForm(
   ".popup__button-close",
   handleAvatarFormSubmit
 );
-
-
-
-
-
-
 
 popupDeleteItem.setEventListeners();
 popupProfile.setEventListeners();
@@ -247,29 +207,24 @@ contentButton.addEventListener("click", () => {
 
 const userInfo = new UserInfo(profileName, profileSubtitle, profileAvatar);
 
+function createCard(item) {
+  const card = new Card(
+    item,
+    ".element_template",
+    popupImage.open,
+    handleAddLike,
+    handleRemoveLike,
+    handleTrashButton,
+    userId
+  );
+
+  return card.createCard();
+}
+
 const itemList = new Section(
   {
     render: (item) => {
-      if (item.owner._id === userId) {
-        return new userCard(
-          item,
-          ".element_template",
-          popupImage.open,
-          handleAddLike,
-          handleRemoveLike,
-          handleLikeStatus,
-          handleTrashButton
-        ).createCard();
-      } else {
-        return new Card(
-          item,
-          ".element_template",
-          popupImage.open,
-          handleAddLike,
-          handleRemoveLike,
-          handleLikeStatus
-        ).createCard();
-      }
+      return createCard(item);
     },
   },
   сardsContainer

@@ -7,10 +7,10 @@ export class PopupWithApprove extends Popup {
     this._handleClickButton = handleClickButton;
   }
 
-  open(id, element){
+  open(id, card){
     super.open();
     this._approveButton.addEventListener("click", () => {
-      this._handleClickButton(id, element, this._approveButton)
+      this._handleClickButton(id, card)
     });
   }
 

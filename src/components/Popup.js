@@ -4,9 +4,11 @@ export class Popup {
     this._selectorCloseButton = selectorCloseButton;
     this._handleEscClose = this._handleEscClose.bind(this);
     this._handleOverlayClick = this._handleOverlayClick.bind(this);
+    this._buttonSave = this._elementPopup.querySelector('.popup__button-save')
   }
 
   open() {
+    this._elementPopup.classList.add("popup_animate");
     this._elementPopup.classList.add("popup_open");
     document.addEventListener("keydown", this._handleEscClose);
   }
@@ -25,6 +27,14 @@ export class Popup {
   _handleOverlayClick(e) {
     if (e.target === e.currentTarget) {
       this.close();
+    }
+  }
+
+  renderLoading(isLoading, text) {
+    if (isLoading) {
+      this._buttonSave.innerText = text;
+    } else {
+      this._buttonSave.innerText = text;
     }
   }
 
