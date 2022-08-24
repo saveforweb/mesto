@@ -13,5 +13,5 @@
   box-sizing: border-box;
   display: flex;
   min-width: 320px;
-  /* transition: visibility 0.5s, opacity 0.5s ease-in; */
+  transition: visibility 0.5s, opacity 0.5s ease-in;
 }

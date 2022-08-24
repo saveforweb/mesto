@@ -8,7 +8,6 @@ export class Popup {
   }
 
   open() {
-    this._elementPopup.classList.add("popup_animate");
     this._elementPopup.classList.add("popup_open");
     document.addEventListener("keydown", this._handleEscClose);
   }
